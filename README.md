@@ -5,25 +5,25 @@ This Dockerfile creates an OSM tile server based on the instructions from https:
 ## Building
 
 ```
-git clone https://https://github.com/rooch84/docker-osm-tile-server.git osm
+git clone https://github.com/rooch84/docker-osm-tile-server.git osm
 cd osm
 docker build -t osm:1.0 .
 ```
 
-## Arguments
+### Arguments
 
 The following arguments can be modified using the --build-args flag.
 
  - `OSM_USER=renderaccount`
  - `DATA=http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf`
  - `OSM2PGSQL_RAM=2000`
- - `ARG OSM2PGSQL_PROCESSES=1`
+ - `OSM2PGSQL_PROCESSES=1`
 
 For example, to populate the map data for Algeria, and process the data using 4 cores and 8GB of RAM, you can use the following command (you may also want to set the tag to the name of the region you're rendering):
 
-`docker build -t osm:algeria --build-arg OSM2PGSQL_RAM=2000--build-arg OSM2PGSQL_PROCESSES=5 --build-arg DATA=http://download.geofabrik.de/africa/algeria-latest.osm.pbf .`
+`docker build -t osm:algeria --build-arg OSM2PGSQL_RAM=2000 --build-arg OSM2PGSQL_PROCESSES=5 --build-arg DATA=http://download.geofabrik.de/africa/algeria-latest.osm.pbf .`
 
-### Running
+## Running
 
 To run the newly built container (and access the tile server from port 8008 for example), just run:
 
