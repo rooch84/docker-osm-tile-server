@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 # Set user
 ARG OSM_USER=renderaccount
@@ -16,16 +16,15 @@ ENV LC_ALL en_US.UTF-8
 RUN apt-get -y install libboost-all-dev git-core tar unzip wget bzip2 \
     build-essential autoconf libtool libxml2-dev libgeos-dev libgeos++-dev \
     libpq-dev libbz2-dev libproj-dev munin-node munin libprotobuf-c0-dev \
-    protobuf-c-compiler libfreetype6-dev libpng12-dev libtiff5-dev \
+    protobuf-c-compiler libfreetype6-dev libpng-dev libtiff5-dev \
     libicu-dev libgdal-dev libcairo-dev libcairomm-1.0-dev apache2 \
     apache2-dev libagg-dev liblua5.2-dev ttf-unifont lua5.1 liblua5.1-dev \ 
     libgeotiff-epsg
 
 # Postgres / Postgis
 
-RUN apt-get -y install postgresql postgresql-contrib postgis \ 
-    postgresql-9.5-postgis-2.2
-
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install postgresql postgresql-contrib postgis \ 
+    postgresql-10-postgis-2.4
 USER postgres
 RUN  /etc/init.d/postgresql start && \
      createuser -s -d -r -e $OSM_USER && \
@@ -60,7 +59,7 @@ RUN cd /home/$OSM_USER/src/osm2pgsql/build && make install
 
 USER root
 RUN apt-get -y install autoconf apache2-dev libtool libxml2-dev libbz2-dev \ 
-    libgeos-dev libgeos++-dev libproj-dev gdal-bin libgdal1-dev libmapnik-dev \
+    libgeos-dev libgeos++-dev libproj-dev gdal-bin libgdal-dev libmapnik-dev \
     mapnik-utils python-mapnik
 
 # mod_tile and renderd
@@ -80,7 +79,8 @@ RUN cd /home/$OSM_USER/src/mod_tile && \
 
 # Stylesheet
 USER root
-RUN apt-get -y install npm nodejs-legacy
+RUN apt-get -y install npm nodejs
+RUN npm -v
 RUN npm install -g carto
 
 USER $OSM_USER
