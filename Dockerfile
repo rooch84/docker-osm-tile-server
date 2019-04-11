@@ -136,4 +136,4 @@ ADD ./scripts/init.sh /bin/init.sh
 
 RUN chmod a+x /bin/init.sh
 
-CMD /bin/init.sh
+ENTRYPOINT [ "sh", "-c", "/bin/init.sh" ] 
